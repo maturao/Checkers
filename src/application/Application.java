@@ -15,8 +15,11 @@ public class Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("hello kokot");
         
+        for (int i = 0; i < 20; i++) {
+            
+            System.out.println("we are number" + i);
+        }
     }
     
 }
