@@ -4,7 +4,10 @@ public class Main {
     
     public static void main(String[] args) {
         
-        System.out.println("┏━━━┳━\n" +"┃● ┃\n" +"┣━━━╋━");
+        Board board = new Board();
+        
+        board.moveField(3, 2, 4, 3);
+        board.print();
         
     }
     
