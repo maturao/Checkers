@@ -2,7 +2,7 @@ package checkers;
 
 public class Board {
 
-    private Field[][] fields;
+    final Field[][] fields;
 
     public void print() {
         System.out.println("   a b c d e f g h");
@@ -48,7 +48,13 @@ public class Board {
         fields = new Field[8][8];
         for (int y = 0; y < fields.length; y++) {
             for (int x = 0; x < fields[y].length; x++) {
-                fields[y][x] = new Field(x, y, placement[y][x]);
+                fields[y][x] = new Field(x, y, placement[y][x], this);
+            }
+        }
+        
+        for (int y = 0; y < fields.length; y++) {
+            for (int x = 0; x < fields[y].length; x++) {
+                fields[y][x].updatePossibleMoves();
             }
         }
 
