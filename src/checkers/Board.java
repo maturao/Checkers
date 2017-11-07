@@ -5,13 +5,11 @@ public class Board {
     final Field[][] fields;
 
     public void print() {
-        System.out.println("|-----------------------------------------|");
-        System.out.println("|                                         |");
-        System.out.println("|       a   b   c   d   e   f   g   h     |");
-        System.out.println("|     ---------------------------------   |");
+        System.out.println( "\n     a   b   c   d   e   f   g   h  ".toUpperCase());
+        System.out.println("   |---|---|---|---|---|---|---|---|");
         
         for (int y = 0; y < fields.length; y++) {
-            System.out.print("|   ");
+            System.out.print(" ");
             System.out.print((y + 1) + " |");
   
             for (int x = 0; x < fields[y].length; x++) {
@@ -20,19 +18,18 @@ public class Board {
                         System.out.print("   ");
                         break;
                     case 1:
-                        System.out.print(" x ");
+                        System.out.print(" X ");
                         break;
                     case 2:
-                        System.out.print(" o ");
+                        System.out.print(" O ");
                         break;
                 }
-                
                 System.out.print("|");
-                
             }
-            System.out.print("\n|     |---|---|---|---|---|---|---|---|   |");
+            System.out.print(" " + (y+1) + " \n   |---|---|---|---|---|---|---|---|");
             System.out.println();
         }
+        System.out.println("     a   b   c   d   e   f   g   h  ".toUpperCase());
     }
 
     public void moveField(int x1, int y1, int x2, int y2) {
