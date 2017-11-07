@@ -5,23 +5,32 @@ public class Board {
     final Field[][] fields;
 
     public void print() {
-        System.out.println("   a b c d e f g h");
+        System.out.println("|-----------------------------------------|");
+        System.out.println("|                                         |");
+        System.out.println("|       a   b   c   d   e   f   g   h     |");
+        System.out.println("|     ---------------------------------   |");
+        
         for (int y = 0; y < fields.length; y++) {
+            System.out.print("|   ");
             System.out.print((y + 1) + " |");
+  
             for (int x = 0; x < fields[y].length; x++) {
                 switch (fields[y][x].getPlayer()) {
                     case 0:
-                        System.out.print("_");
+                        System.out.print("   ");
                         break;
                     case 1:
-                        System.out.print("W");
+                        System.out.print(" x ");
                         break;
                     case 2:
-                        System.out.print("B");
+                        System.out.print(" o ");
                         break;
                 }
+                
                 System.out.print("|");
+                
             }
+            System.out.print("\n|     |---|---|---|---|---|---|---|---|   |");
             System.out.println();
         }
     }
