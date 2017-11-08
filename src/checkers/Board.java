@@ -1,12 +1,14 @@
 package checkers;
 
+import java.util.Arrays;
+
 public class Board {
 
     final Field[][] fields;
 
     public void print() {
-        System.out.println( "\n     a   b   c   d   e   f   g   h  ".toUpperCase());
-        System.out.println("   |---|---|---|---|---|---|---|---|");
+        System.out.println( "\n     a   b   c   d   e   f   g   h     ".toUpperCase());
+        System.out.println(   "   |---|---|---|---|---|---|---|---|   ");
         
         for (int y = 0; y < fields.length; y++) {
             System.out.print(" ");
@@ -26,10 +28,10 @@ public class Board {
                 }
                 System.out.print("|");
             }
-            System.out.print(" " + (y+1) + " \n   |---|---|---|---|---|---|---|---|");
+            System.out.print(" " + (y+1) + " \n   |---|---|---|---|---|---|---|---|   ");
             System.out.println();
         }
-        System.out.println("     a   b   c   d   e   f   g   h  ".toUpperCase());
+        System.out.println("     a   b   c   d   e   f   g   h     ".toUpperCase());
     }
 
     public void moveField(int x1, int y1, int x2, int y2) {
@@ -39,17 +41,45 @@ public class Board {
     public Field getField(int x, int y) {
         return fields[y][x];
     }
+    
+    
+    public Field getField(String pos) {
+        char[] row = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+        pos = pos.toLowerCase();
+        if( pos.matches("[abcdefgh][12345678]")) {
+            int x = 0;
+            for (int i = 0; i < row.length; i++) {
+                if (pos.charAt(0) == row[i]) {
+                    x = i;
+                    break;
+                }
+            }
+            int y = Integer.parseInt(pos.substring(1))-1;
+            return fields[y][x];
+        }
+        return fields[0][0];
+    }
 
     public Board() {
+//        int[][] placement = {
+//            {0, 1, 0, 1, 0, 1, 0, 1},
+//            {1, 0, 1, 0, 1, 0, 1, 0},
+//            {0, 1, 0, 1, 0, 1, 0, 1},
+//            {0, 0, 0, 0, 0, 0, 0, 0},
+//            {0, 0, 0, 0, 0, 0, 0, 0},
+//            {2, 0, 2, 0, 2, 0, 2, 0},
+//            {0, 2, 0, 2, 0, 2, 0, 2},
+//            {2, 0, 2, 0, 2, 0, 2, 0},};
+        
         int[][] placement = {
-            {0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 0, 1, 0, 1, 0, 1, 0},
-            {0, 1, 0, 1, 0, 1, 0, 1},
             {0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0},
-            {2, 0, 2, 0, 2, 0, 2, 0},
-            {0, 2, 0, 2, 0, 2, 0, 2},
-            {2, 0, 2, 0, 2, 0, 2, 0},};
+            {0, 0, 1, 0, 1, 0, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 1, 0},
+            {0, 0, 0, 2, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0},};
 
         fields = new Field[8][8];
         for (int y = 0; y < fields.length; y++) {
@@ -60,7 +90,7 @@ public class Board {
         
         for (int y = 0; y < fields.length; y++) {
             for (int x = 0; x < fields[y].length; x++) {
-                fields[y][x].updatePossibleMoves();
+                fields[y][x].updateMoves();
             }
         }
 
