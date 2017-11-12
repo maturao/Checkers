@@ -13,16 +13,17 @@ public class Position {
         return y;
     }
 
+    @Override
     public String toString() {
         String[] row = {"a", "b", "c", "d", "e", "f", "g", "h"};
-        return row[x] + (y + 1);
+        return (row[x] + (y + 1)).toUpperCase();
     }
 
     public boolean equal(Position pos) {
         return x == pos.x && y == pos.y;
     }
 
-    public static Position toPosition(String pos) {
+    public static Position convertString(String pos) {
         char[] row = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
         pos = pos.toLowerCase();
         int x = 0;

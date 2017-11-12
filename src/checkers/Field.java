@@ -7,21 +7,28 @@ public class Field {
     private int player;
     private boolean king;
 
+    private Moves moves;
+    public Jumps jumps;
+
     public final Position position;
     private final Board board;
-    private Moves moves;
-    public ArrayList<Jump> jumps;
 
     public void moveTo(Field newPosition) {
-        if (!this.isEmpty() && newPosition.isEmpty()) {
+        if (this.isNotEmpty() && newPosition.isEmpty()) {
             newPosition.player = this.player;
             newPosition.king = this.king;
             this.clean();
-            newPosition.checkMoves();
+            board.updateAll();
         }
     }
 
+    public void jumpTo(Position newPosition) {
+        board.getField(position.between(newPosition)).clean();
+        moveTo(newPosition);
+    }
+
     public void moveTo(Position pos) {
+
         moveTo(board.getField(pos));
     }
 
@@ -29,7 +36,7 @@ public class Field {
         this.player = 0;
         this.king = false;
         this.moves.clear();
-        //this.jumps.clear();
+        this.jumps.clear();
     }
 
     public void checkMoves() {
@@ -39,35 +46,14 @@ public class Field {
     }
 
     public void checkJumps() {
-        jumps.clear();
-        Position left1, left2, right1, right2;
-        if (movesUp() || isKing()) {
-            left1 = position.offset(true, false, 1);
-            left2 = position.offset(true, false, 2);
-            addJmp(left2, left1);
-
-            right1 = position.offset(true, true, 1);
-            right2 = position.offset(true, true, 2);
-            addJmp(right2, right1);
-
-        }
-        if (movesDown() || isKing()) {
-            left1 = position.offset(false, false, 1);
-            left2 = position.offset(false, false, 2);
-            addJmp(left2, left1);
-
-            right1 = position.offset(false, true, 1);
-            right2 = position.offset(false, true, 2);
-            addJmp(right2, right1);
+        if (isNotEmpty()) {
+            jumps.update();
         }
     }
 
-    private void addJmp(Position jump, Position jumpOver) {
-        if (jump.isInBound() && getField(jump).isEmpty()) {
-            if (isOtherPlayer(jumpOver)) {
-                jumps.add(new Jump(jump));
-                jumps.get(jumps.size() - 1).nextJump();
-            }
+    public void checkKing() {
+        if ((movesDown() && getY() == Board.WIDTHHEIGHT - 1) || (movesUp() && getY() == 0)) {
+            toKing();
         }
     }
 
@@ -98,6 +84,14 @@ public class Field {
         return player == 2;
     }
 
+    public boolean canMove() {
+        return moves.hasMoves() && !hasToJump();
+    }
+
+    public boolean hasToJump() {
+        return jumps.hasJumps();
+    }
+
     public boolean isOtherPlayer(Position pos) {
         return board.getField(pos).getPlayer() != this.getPlayer() && this.isNotEmpty() && board.getField(pos).isNotEmpty();
     }
@@ -110,6 +104,10 @@ public class Field {
         return this.position.getY();
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
     public int getPlayer() {
         return player;
     }
@@ -118,21 +116,18 @@ public class Field {
         return moves.list;
     }
 
-    public Field getField(Position pos) {
-        return board.getField(pos);
+    public ArrayList<Position> getJumps() {
+        return jumps.list;
     }
 
-    public Field offsetField(boolean upward, boolean left, int offset) {
-        if (position.offset(upward, left, offset).isInBound()) {
-            return board.getField(position.offset(upward, left, offset));
-        } else {
-            return new Field();
-        }
+    public Field getField(Position pos) {
+        return board.getField(pos);
     }
 
     public void toKing() {
         king = true;
         checkMoves();
+        checkJumps();
     }
 
     public Field(int x, int y, int player, Board board) {
@@ -140,22 +135,12 @@ public class Field {
         this.player = player;
         this.board = board;
         this.moves = new Moves();
-        this.jumps = new ArrayList<>();
-    }
-
-    public Field() {
-        this.position = new Position(0, 0);
-        this.player = 0;
-        this.board = new Board();
+        this.jumps = new Jumps();
     }
 
     class Moves {
 
         private ArrayList<Position> list;
-
-        public Moves() {
-            this.list = new ArrayList<>();
-        }
 
         public void Update() {
             clear();
@@ -183,105 +168,62 @@ public class Field {
             list.clear();
         }
 
+        public boolean hasMoves() {
+            return !list.isEmpty();
+        }
+
+        public Moves() {
+            this.list = new ArrayList<>();
+        }
+
     }
 
-    class Jump {
+    public class Jumps {
 
-        public Position pos;
-        public Jump parent;
-        public ArrayList<Jump> children;
+        public ArrayList<Position> list;
 
-        public void nextJump() {
+        public void update() {
+            list.clear();
             Position left1, left2, right1, right2;
             if (movesUp() || isKing()) {
-                left1 = pos.offset(true, true, 1);
-                left2 = pos.offset(true, true, 2);
+                left1 = position.offset(true, true, 1);
+                left2 = position.offset(true, true, 2);
                 addJump(left2, left1);
 
-                right1 = pos.offset(true, false, 1);
-                right2 = pos.offset(true, false, 2);
+                right1 = position.offset(true, false, 1);
+                right2 = position.offset(true, false, 2);
                 addJump(right2, right1);
 
             }
             if (movesDown() || isKing()) {
-                left1 = pos.offset(false, true, 1);
-                left2 = pos.offset(false, true, 2);
+                left1 = position.offset(false, true, 1);
+                left2 = position.offset(false, true, 2);
                 addJump(left2, left1);
 
-                right1 = pos.offset(false, false, 1);
-                right2 = pos.offset(false, false, 2);
+                right1 = position.offset(false, false, 1);
+                right2 = position.offset(false, false, 2);
                 addJump(right2, right1);
             }
         }
 
-        private void addJump(Position jump, Position jumpOver) {
-            if (jump.isInBound() && (getField(jump).isEmpty() || getField(jump).position.equal(position))) {
+        private void addJump(Position jumpTo, Position jumpOver) {
+            if (jumpTo.isInBound() && (getField(jumpTo).isEmpty())) {
                 if (isOtherPlayer(jumpOver)) {
-
-                    boolean add = true;
-                    ArrayList<Position> previousJumps = jumpedOver();
-                    for (int i = 0; i < previousJumps.size(); i++) {
-                        if (previousJumps.get(i).equal(jumpOver)) {
-                            add = false;
-                            break;
-                        }
-                    }
-                    
-                    if (add) {
-                        children.add(new Jump(jump, this));
-                        children.get(children.size() - 1).nextJump();
-                    }
+                    list.add(jumpTo);
                 }
             }
         }
 
-        public boolean hasChildren() {
-            return children.size() > 0;
+        public void clear() {
+            list.clear();
         }
 
-        public boolean hasParent() {
-            return !this.equals(parent);
+        public boolean hasJumps() {
+            return !list.isEmpty();
         }
 
-        public Position jumpsOver() {
-            if (hasParent()) {
-                return parent.pos.between(pos);
-            } else {
-                return position.between(pos);
-            }
-        }
-
-        public ArrayList<Position> jumpedOver() {
-            ArrayList<Position> list = new ArrayList<>();
-            previousJumpOver(list);
-            return list;
-        }
-
-        private void previousJumpOver(ArrayList<Position> jumpedOver) {
-            jumpedOver.add(jumpsOver());
-            if (hasParent()) {
-                parent.previousJumpOver(jumpedOver);
-            }
-        }
-
-        public Jump getChild(int i) {
-            if (hasChildren()) {
-                return children.get(i);
-            } else {
-                return this;
-            }
-        }
-
-        public Jump(Position pos) {
-            this.pos = pos;
-            this.parent = this;
-            children = new ArrayList<>();
-        }
-
-        public Jump(Position pos, Jump parent) {
-            this.pos = pos;
-            this.parent = parent;
-            children = new ArrayList<>();
+        public Jumps() {
+            list = new ArrayList<>();
         }
 
     }
