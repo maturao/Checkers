@@ -13,6 +13,7 @@ public class Main {
 
     private static void gameOver() {
         gameOver = true;
+        System.out.println("Game Over!\nWinner: " + playing.getName());
     }
 
     public static void switchPlayer() {
@@ -39,7 +40,8 @@ public class Main {
         player2 = new Player(IO.getName(), board, 2);
         player1 = new Player(IO.getName(), board, 1);
         playing = player2;
-
+        board.setPlayers(player1, player2);
+        
         Position moving;
         Position moveTo;
         board.print();
@@ -81,7 +83,6 @@ public class Main {
                 board.getField(moving).moveTo(moveTo);
                 board.print();
             }
-            switchPlayer();
             if (player1.pieces() == 0) {
                 System.out.println("\n\nWinner: " + player2.getName());
                 System.out.println();
@@ -92,6 +93,8 @@ public class Main {
                 System.out.println();
                 gameOver();
             }
+        
+            switchPlayer();
         }
 
     }
