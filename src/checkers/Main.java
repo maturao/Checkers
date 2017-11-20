@@ -1,6 +1,7 @@
 package checkers;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
@@ -13,9 +14,26 @@ public class Main {
 
     private static void gameOver() {
         gameOver = true;
-        System.out.println("Game Over!\nWinner: " + playing.getName());
+        System.out.println("   _____                         ____                 \n" +
+                           "  / ____|                       / __ \\                \n" +
+                           " | |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ \n" +
+                           " | | |_ |/ _` | '_ ` _ \\ / _ \\ | |  | \\ \\ / / _ \\ '__|\n" +
+                           " | |__| | (_| | | | | | |  __/ | |__| |\\ V /  __/ |   \n" +
+                           "  \\_____|\\__,_|_| |_| |_|\\___|  \\____/  \\_/ \\___|_|   \n");
+        System.out.println();
+        System.out.println();
+                System.out.println("\n\n__          ___                       \n" +
+                                     " \\ \\        / (_)                      \n" +
+                                     "  \\ \\  /\\  / / _ _ __  _ __   ___ _ __ \n" +
+                                     "   \\ \\/  \\/ / | | '_ \\| '_ \\ / _ \\ '__|\n" +
+                                       "    \\  /\\  /  | | | | | | | |  __/ |   \n" +
+                                       "     \\/  \\/   |_|_| |_|_| |_|\\___|_|   \n" +
+                                       "                                       \n");
+                System.out.println();
+                System.out.println();
+                System.out.println(playing.getName());
     }
-
+    
     public static void switchPlayer() {
         if (playing.equals(player1)) {
             playing = player2;
@@ -36,7 +54,44 @@ public class Main {
                 + "  \\____|_| |_|\\___|\\___|_|\\_\\___|_|  |___/\n"
                 + "                                          "
         );
-
+        
+        Scanner sc = new Scanner(System.in);
+        
+        int menu;
+        
+        boolean start = true;
+            
+        if(start == true){
+        }
+        else if(start ==false){            
+        }
+        
+        
+        System.out.println("============================");
+        System.out.println("|           MENU           |");
+        System.out.println("============================");
+        System.out.println("| Options:                 |");
+        System.out.println("|        1. start          |");
+        System.out.println("|        2. exit           |");
+        System.out.println("|                          |");
+        System.out.println("============================");
+         
+        menu = sc.nextInt();
+        
+        System.out.println("Select option: " + menu);
+        switch(menu){
+            case 1:
+                System.out.println("Option 1 selected");
+                break;
+            case 2:
+                System.out.println("Exit selected");
+                break;
+            default:
+                System.out.println("Invalid selection");
+                break;
+        }
+        
+        
         player2 = new Player(IO.getName(), board, 2);
         player1 = new Player(IO.getName(), board, 1);
         playing = player1;
@@ -45,7 +100,9 @@ public class Main {
         Position moving, moveTo;
         board.print();
         while (!gameOver) {
-            
+            gameOver();
+            break;
+            /*
             switchPlayer();
             
             System.out.println("Player move: " + playing.getName());
@@ -88,7 +145,7 @@ public class Main {
             
             if (player1.pieces() == 0 || player2.pieces() == 0) {
                 gameOver();
-            }
+            }*/
         }
 
     }
