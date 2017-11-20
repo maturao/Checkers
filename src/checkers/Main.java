@@ -13,7 +13,11 @@ public class Main {
 
     private static void gameOver() {
         gameOver = true;
-        System.out.println("Game Over!\nWinner: " + playing.getName());
+        System.out.print("\n\n\n");
+        IO.fancyPrint("game over");
+        System.out.print("\n\n\n");
+        IO.fancyPrint("Winner is");
+        IO.fancyPrint(playing.getName());
     }
 
     public static void switchPlayer() {
@@ -27,16 +31,8 @@ public class Main {
     public static void main(String[] args) {
 
         Board board = new Board();
-
-        System.out.println(
-                "   ____ _               _                 \n"
-                + "  / ___| |__   ___  ___| | _____ _ __ ___ \n"
-                + " | |   | '_ \\ / _ \\/ __| |/ / _ \\ '__/ __|\n"
-                + " | |___| | | |  __/ (__|   <  __/ |  \\__ \\\n"
-                + "  \\____|_| |_|\\___|\\___|_|\\_\\___|_|  |___/\n"
-                + "                                          "
-        );
-
+        IO.fancyPrint("Checkers");
+        
         player2 = new Player(IO.getName(), board, 2);
         player1 = new Player(IO.getName(), board, 1);
         playing = player1;
@@ -44,6 +40,9 @@ public class Main {
         
         Position moving, moveTo;
         board.print();
+        
+        
+        
         while (!gameOver) {
             
             switchPlayer();
@@ -89,8 +88,8 @@ public class Main {
             if (player1.pieces() == 0 || player2.pieces() == 0) {
                 gameOver();
             }
+            gameOver();
         }
-
     }
 
 }
