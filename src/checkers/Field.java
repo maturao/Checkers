@@ -23,7 +23,21 @@ public class Field {
     }
 
     public void jumpTo(Position newPosition) {
-        board.getField(position.between(newPosition)).clean();
+        Field takenPiece = board.getField(position.between(newPosition));
+        if (takenPiece.player == 1) {
+            if (takenPiece.isKing()) {
+                board.getPlayer1().takeKing();
+            } else {
+                board.getPlayer1().takePiece();
+            }
+        } else {
+            if (takenPiece.isKing()) {
+                board.getPlayer2().takeKing();
+            } else {
+                board.getPlayer2().takePiece();
+            }
+        }
+        takenPiece.clean();
         moveTo(newPosition);
     }
 

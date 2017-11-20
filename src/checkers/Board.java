@@ -7,11 +7,21 @@ public class Board {
     public final static int WIDTHHEIGHT = 8;
     public final static int PLAYERPIECES = 12;
     final Field[][] fields;
+    private Player player1;
+    private Player player2;
+    
+    private int player1TakenIndex;
+    private int player2TakenIndex;
 
     public void print() {
         System.out.println("\n     a   b   c   d   e   f   g   h     ".toUpperCase());
-        System.out.println("   +---+---+---+---+---+---+---+---+   ");
-
+        System.out.print("   +---+---+---+---+---+---+---+---+    ");
+        
+        player1TakenIndex = 0;
+        player2TakenIndex = 0;
+        
+        printTakenPieces();
+        System.out.println();
         for (int y = 0; y < fields.length; y++) {
             System.out.print(" ");
             System.out.print((y + 1) + " |");
@@ -38,10 +48,43 @@ public class Board {
                 }
                 System.out.print("|");
             }
-            System.out.print(" " + (y + 1) + " \n   +---+---+---+---+---+---+---+---+   ");
+            System.out.print(" " + (y+1) + "  ");
+            
+            printTakenPieces();
+            
+            System.out.print(" \n   +---+---+---+---+---+---+---+---+    ");
+            
+            printTakenPieces();
+            
             System.out.println();
         }
         System.out.println("     a   b   c   d   e   f   g   h     ".toUpperCase());
+    }
+    
+    public void printTakenPieces() {
+        if (player1TakenIndex < player1.piecesTaken()) {
+            if (player1.isTakenPieceKing(player1TakenIndex)) {
+                System.out.print("   X");
+            } else {
+                System.out.print("   x");
+            }
+            player1TakenIndex++;
+            if (player2TakenIndex < player2.piecesTaken()) {
+                if (player2.isTakenPieceKing(player2TakenIndex)) {
+                    System.out.print("   O");
+                } else {
+                    System.out.print("   o");
+                }
+                player2TakenIndex++;
+            }
+        } else if (player2TakenIndex < player2.piecesTaken()) {
+            if (player2.isTakenPieceKing(player2TakenIndex)) {
+                System.out.print("       O");
+            } else {
+                System.out.print("       o");
+            }
+            player2TakenIndex++;
+        }
     }
 
     public void moveField(Position pos1, Position pos2) {
@@ -143,6 +186,19 @@ public class Board {
         return false;
     }
 
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+    
+    public void setPlayers(Player player1, Player player2) {
+        this.player1 = player1;
+        this.player2 = player2;
+    }
+
     public Board() {
         int[][] placement = {
 //            {0, 0, 0, 0, 0, 0, 0, 0},
@@ -162,7 +218,7 @@ public class Board {
             {2, 0, 2, 0, 2, 0, 2, 0},
             {0, 2, 0, 2, 0, 2, 0, 2},
             {2, 0, 2, 0, 2, 0, 2, 0},};
-
+        
         fields = new Field[WIDTHHEIGHT][WIDTHHEIGHT];
         for (int y = 0; y < fields.length; y++) {
             for (int x = 0; x < fields[y].length; x++) {
