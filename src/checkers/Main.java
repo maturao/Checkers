@@ -55,41 +55,44 @@ public class Main {
                 + "                                          "
         );
         
-        Scanner sc = new Scanner(System.in);
-        
+       Scanner sc = new Scanner(System.in);
+
+        for (int x = 1; x <= 1; x++) {
+            System.out.println(x + "============================\n" + x
+                                 + "|           MENU          |\n"
+                                 + "============================\n"
+                                 + "| Options:                 |\n"
+                                 + "|        1. start          |\n"
+                                 + "|        2. rules          |\n"
+                                 + "|        0. exit           |\n" 
+                                 + "|                          |\n"
+                                 + "============================");
+        }
+
+        boolean exit = false;
+
         int menu;
-        
-        boolean start = true;
-            
-        if(start == true){
-        }
-        else if(start ==false){            
-        }
-        
-        
-        System.out.println("============================");
-        System.out.println("|           MENU           |");
-        System.out.println("============================");
-        System.out.println("| Options:                 |");
-        System.out.println("|        1. start          |");
-        System.out.println("|        2. exit           |");
-        System.out.println("|                          |");
-        System.out.println("============================");
-         
+
+        System.out.print("Choose menu item: ");
         menu = sc.nextInt();
         
-        System.out.println("Select option: " + menu);
-        switch(menu){
+        do {
+            switch (menu) {
             case 1:
                 System.out.println("Option 1 selected");
                 break;
             case 2:
+                System.out.println("Option 2 selected");
+                break;
+            case 0:
                 System.out.println("Exit selected");
                 break;
             default:
-                System.out.println("Invalid selection");
-                break;
-        }
+                System.out.println("Invalid choice.");
+                System.out.println(sc.nextInt(menu));
+            }   
+        } while(!exit);
+        System.out.println(gameOver);
         
         
         player2 = new Player(IO.getName(), board, 2);
@@ -100,9 +103,7 @@ public class Main {
         Position moving, moveTo;
         board.print();
         while (!gameOver) {
-            gameOver();
-            break;
-            /*
+            
             switchPlayer();
             
             System.out.println("Player move: " + playing.getName());
@@ -145,7 +146,7 @@ public class Main {
             
             if (player1.pieces() == 0 || player2.pieces() == 0) {
                 gameOver();
-            }*/
+            }
         }
 
     }
