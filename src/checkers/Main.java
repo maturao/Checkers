@@ -85,7 +85,9 @@ public class Main {
                 System.out.println("Option 2 selected");
                 break;
             case 0:
+                if(exit == true){
                 System.out.println("Exit selected");
+                }
                 break;
             default:
                 System.out.println("Invalid choice.");
@@ -103,7 +105,9 @@ public class Main {
         Position moving, moveTo;
         board.print();
         while (!gameOver) {
-            
+            gameOver();
+            break;
+            /*
             switchPlayer();
             
             System.out.println("Player move: " + playing.getName());
@@ -146,7 +150,7 @@ public class Main {
             
             if (player1.pieces() == 0 || player2.pieces() == 0) {
                 gameOver();
-            }
+            }*/
         }
 
     }
