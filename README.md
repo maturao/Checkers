@@ -1,3 +1,3 @@
-# TopSecretJavaProject
-cancer
-plz dont touch our project, or u get anal canzur
+# INFIS - programming class - checkers
+
+Simple CLI checkers game made as a project for a high school programming class.
